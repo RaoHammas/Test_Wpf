@@ -9,30 +9,25 @@ public partial class MainWindowViewModel : ObservableObject
 
     public MainWindowViewModel()
     {
-        _ = SubscribeForData();
     }
 
-    private Task SubscribeForData()
-    {
-        _ = Task.Run(async () =>
-        {
-            while (await DataChannel.Subscribe("IntData").WaitToReadAsync())
-            {
-                DataValue = await DataChannel.Subscribe("IntData").ReadAsync();
-            }
-        });
-
-        return Task.CompletedTask;
-        /*await foreach (var data in DataChannel.Subscribe("IntData").ReadAllAsync())
-        {
-            DataValue = data;
-        }*/
-    }
 
     [RelayCommand]
     private void OpenNewWindow()
     {
-        var newWind = new MainWindow();
-        newWind.Show();
+        Thread thread = new Thread(() =>
+        {
+            var newWind = new ConsumerWindow();
+            newWind.DataContext = new ConsumerWindowViewModel();
+            newWind.Show();
+
+            newWind.Closed += (sender2, e2) =>
+                newWind.Dispatcher.InvokeShutdown();
+
+            System.Windows.Threading.Dispatcher.Run();
+        });
+
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.Start();
     }
 }

@@ -1,42 +1,42 @@
-﻿using System.Threading.Channels;
+﻿using System.Collections.Concurrent;
+using System.Threading.Channels;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Test_Wpf;
 
 public static class DataChannel
 {
-    private static readonly Dictionary<string, Subscription<int>> Subscriptions;
-
-    static DataChannel()
-    {
-        Subscriptions = new Dictionary<string, Subscription<int>>();
-    }
+    private static readonly ConcurrentDictionary<string, Subscription<int>> Subscriptions = new();
+    private static readonly ConcurrentDictionary<string, Task> Writers = new();
 
     public static ChannelReader<int> Subscribe(string key)
     {
-        if (Subscriptions.TryGetValue(key, out var existingSubscription))
+        var subscription = Subscriptions.GetOrAdd(key, k => new Subscription<int>
         {
-            return existingSubscription.DataChannel.Reader;
-        }
+            Key = k,
+            DataChannel = Channel.CreateUnbounded<int>(new UnboundedChannelOptions
+            {
+                SingleReader = false,
+                SingleWriter = true
+            })
+        });
 
-        var newSub = new Subscription<int>
-        {
-            Key = key,
-            DataChannel = Channel.CreateUnbounded<int>()
-        };
+        Writers.GetOrAdd(key, _ => StartWriterTask(subscription.DataChannel.Writer));
 
-        Task.Run(async () =>
+        return subscription.DataChannel.Reader;
+    }
+
+    private static Task StartWriterTask(ChannelWriter<int> writer)
+    {
+        return Task.Factory.StartNew(async () =>
         {
             var i = 0;
             while (true)
             {
-                newSub.DataChannel.Writer.TryWrite(++i);
+                await writer.WriteAsync(++i);
                 await Task.Delay(500);
             }
-        });
-
-        Subscriptions.Add(key, newSub);
-        return Subscriptions[key].DataChannel.Reader;
+        }, TaskCreationOptions.LongRunning);
     }
 }
 

@@ -1,0 +1,23 @@
+﻿<Window x:Class="Test_Wpf.ConsumerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Test_Wpf"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance local:ConsumerWindowViewModel,
+                                     IsDesignTimeCreatable=False}"
+        Title="ConsumerWindow" Height="250" Width="300">
+    <Grid>
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="136"
+            FontWeight="Bold"
+            Text="{Binding DataValue}">
+            <TextBlock.Effect>
+                <DropShadowEffect BlurRadius="5" Opacity="0.4" />
+            </TextBlock.Effect>
+        </TextBlock>
+    </Grid>
+</Window>
