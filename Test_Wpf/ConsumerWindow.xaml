@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:testWpfChannels="clr-namespace:Test_Wpf_Channels"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance local:ConsumerWindowViewModel,
+        d:DataContext="{d:DesignInstance testWpfChannels:ConsumerWindowViewModel,
                                      IsDesignTimeCreatable=False}"
         Title="ConsumerWindow" Height="250" Width="300">
     <Grid>
