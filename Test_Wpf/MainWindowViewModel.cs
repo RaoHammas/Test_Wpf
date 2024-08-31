@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace Test_Wpf;
+namespace Test_Wpf_Channels;
 
 public partial class MainWindowViewModel : ObservableObject
 {

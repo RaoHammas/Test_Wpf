@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Test_Wpf;
+namespace Test_Wpf_Channels;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml

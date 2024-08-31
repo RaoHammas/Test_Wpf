@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Test_Wpf;
+namespace Test_Wpf_Channels;
 
 public partial class ConsumerWindowViewModel : ObservableObject
 {

@@ -1,8 +1,6 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
 
-namespace Test_Wpf
+namespace Test_Wpf_Channels
 {
     /// <summary>
     /// Interaction logic for App.xaml
